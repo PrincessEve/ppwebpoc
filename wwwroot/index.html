@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin</title>
+    <title>PPwebPOC</title>
 
 <!--         <link rel="stylesheet" href="css/font-awesome.min.css" /> -->
 <!--         <link rel="stylesheet" href="css/bootstrap.min.css" /> -->
@@ -174,22 +174,33 @@
                 // update the posiion attributes
                 target.setAttribute('data-x', x);
                 target.setAttribute('data-y', y);
-            }
+            };
+          
+            var startPos = {x: 0, y: 0};
+            function dragStartListener (event) {
+                var rect = interact.getElementRect(event.target);
+                startPos.x = rect.left + rect.width  / 2;
+                startPos.y = rect.top  + rect.height / 2;
+            };
 
-            // this is used later in the resizing and gesture demos
             window.dragMoveListener = dragMoveListener;
 
             interact('.widget')
                 .draggable({
                     inertia: true,
-                    max: Infinity,
-                    maxPerElement: Infinity,
+                    snap: {
+                        targets: [startPos],
+                        range: Infinity,
+                        relativePoints: [ { x: 0.5, y: 0.5 } ],
+                        endOnly: true
+                    },
                     restrict: {
                         restriction: "#container-outer",
                         endOnly: true,
                         elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
                     },
                     autoScroll: true,
+                    onstart: dragStartListener,
                     onmove: dragMoveListener,
                     onend: function (event) {
                         //var textEl = event.target.querySelector('p');

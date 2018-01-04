@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "uglifyjs": "node_modules/uglify-js/bin/uglifyjs wwwroot/js/site.js -o wwwroot/js/site.min.js -c -m",
+    "uglifycss": "node_modules/uglifycss/uglifycss --output wwwroot/css/site.min.css wwwroot/css/layout-edit.css wwwroot/css/layout.css wwwroot/css/site.css",
+    "build": "npm run uglifyjs && npm run uglifycss",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node_modules/http-server/bin/http-server ./wwwroot",
     "surge": "surge -p ./wwwroot -d ppwebpoc.surge.sh"
@@ -19,6 +22,8 @@
   },
   "homepage": "https://github.com/PrincessEve/ppwebpoc#readme",
   "devDependencies": {
-    "http-server": "^0.10.0"
+    "http-server": "^0.10.0",
+    "uglify-js": "^3.3.4",
+    "uglifycss": "0.0.27"
   }
 }
