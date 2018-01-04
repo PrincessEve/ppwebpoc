@@ -1,0 +1,25 @@
+{
+  "name": "ppwebpoc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node_modules/http-server/bin/http-server ./wwwroot",
+    "surge": "surge -p ./wwwroot -d ppwebpoc.surge.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PrincessEve/ppwebpoc.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PrincessEve/ppwebpoc/issues"
+  },
+  "homepage": "https://github.com/PrincessEve/ppwebpoc#readme",
+  "devDependencies": {
+    "http-server": "^0.10.0",
+    "surge": "^0.19.0"
+  }
+}

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin</title>
+
+<!--         <link rel="stylesheet" href="css/font-awesome.min.css" /> -->
+<!--         <link rel="stylesheet" href="css/bootstrap.min.css" /> -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css" >
+        <link rel="stylesheet" href="css/site.min.css" />
+
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">PPwebPOC</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a asp-area="" asp-controller="Home" asp-action="POClayout">Layout</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="POCdraggable">draggable</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="body-content">
+
+<style>
+    #widget-box {
+        position: relative;
+        top: -100px;
+        width: 170px;
+        height: 350px;
+        background-color: #29e;
+        color: white;
+        border-radius: 3px;
+        -webkit-transform: translate(0px, 0px);
+        transform: translate(0px, 0px);
+    }
+    #widget-box-bar {
+        height: 45px;
+        background-color: mediumvioletred;
+        text-align:center;
+    }
+    .widget {
+        text-align: center;
+        color:black;
+        background-color: lawngreen;
+        margin: 1rem;
+        line-height: 3rem;
+    }
+    #container-inner {
+        background-color:azure;
+    }
+</style>
+
+<div id="container-outer" style="width:98%; margin: 2rem auto;">
+    <div id="container-inner" class="container">
+        <div class="row">
+            <div class="col-sm-6"><div style="background-color:lightgray;height:100px"></div></div>
+            <div class="col-sm-6"><div style="background-color:lightgray;height:100px"></div></div>
+        </div>
+    </div>
+    <div id="widget-box">
+        <p id="widget-box-bar">Widgets</p>
+        <div class="widget" >News</div>
+        <div class="widget" >Knowledge</div>
+        <div class="widget" >Project</div>
+        <div class="widget" >Highlight</div>
+    </div>
+
+    <div class="container" id="container-edit">
+    </div>
+    <br />
+    <button type="button" class="btn btn-success" id="button-add-row"><i class="fa fa-plus" aria-hidden="true"></i></button>
+    <br /><br />
+</div>
+
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+        <hr />
+        <footer>
+            <p>&copy; 2017 - PPwebPOC </p>
+        </footer>
+    </div>
+
+<!-- <script src="js/jquery-2.2.0.min.js"></script> -->
+<!-- <script src="js/bootstrap.min.js"></script> -->
+<!-- <script src="js/interact.min.js"></script> -->
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/interactjs@1.3.3/dist/interact.min.js"></script>
+<script src="js/site.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            function addrow(container, rownumber) {
+                var buttonaddcol = '<button type="button" class="btn btn-success pull-right edit-botton-add-col clearfix"><i class="fa fa-columns" aria-hidden="true"></i></button>';
+                var row = '<div id="row' + rownumber + '" class="row edit-row"><div class="col-sm-12 edit-col"><div class="edit-content"></div></div>' + buttonaddcol + '</div>';
+                //var row = '<div id="row' + rownumber + '" class="row edit-row"><div class="col-sm-12 edit-col"><div class="edit-content"></div></div></div>';
+                container.append(row);
+            }
+            var editrows = [];
+            $('#button-add-row').off('click').on('click', function () {
+                editrows.push([12]);
+                addrow($('#container-edit'), editrows.length);
+            });
+
+
+            interact('#widget-box')
+                .draggable({
+                    allowFrom: '#widget-box-bar',
+                    inertia: true,
+                    restrict: {
+                        restriction: "parent",
+                        endOnly: true,
+                        elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+                    },
+                    autoScroll: true,
+                    onmove: dragMoveListener,
+                    onend: function (event) {
+                        //var textEl = event.target.querySelector('p');
+                        /*
+                        textEl && (textEl.textContent =
+                            'moved a distance of '
+                            + (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
+                                Math.pow(event.pageY - event.y0, 2) | 0))
+                                .toFixed(2) + 'px');
+                        */
+                    }
+                });
+
+            function dragMoveListener(event) {
+                var target = event.target,
+                    // keep the dragged position in the data-x/data-y attributes
+                    x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+                    y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+                // translate the element
+                target.style.webkitTransform =
+                    target.style.transform =
+                    'translate(' + x + 'px, ' + y + 'px)';
+
+                // update the posiion attributes
+                target.setAttribute('data-x', x);
+                target.setAttribute('data-y', y);
+            }
+
+            // this is used later in the resizing and gesture demos
+            window.dragMoveListener = dragMoveListener;
+
+            interact('.widget')
+                .draggable({
+                    inertia: true,
+                    max: Infinity,
+                    maxPerElement: Infinity,
+                    restrict: {
+                        restriction: "#container-outer",
+                        endOnly: true,
+                        elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+                    },
+                    autoScroll: true,
+                    onmove: dragMoveListener,
+                    onend: function (event) {
+                        //var textEl = event.target.querySelector('p');
+                        /*
+                        textEl && (textEl.textContent =
+                            'moved a distance of '
+                            + (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
+                                Math.pow(event.pageY - event.y0, 2) | 0))
+                                .toFixed(2) + 'px');
+                        */
+                    }
+                });
+
+            interact('#container-inner').dropzone({
+                // only accept elements matching this CSS selector
+                accept: '.widget',
+                // Require a 75% element overlap for a drop to be possible
+                overlap: 0.8,
+
+                // listen for drop related events:
+
+                ondropactivate: function (event) {
+                    // add active dropzone feedback
+                    event.target.classList.add('drop-active');
+                },
+                ondragenter: function (event) {
+                    var draggableElement = event.relatedTarget,
+                        dropzoneElement = event.target;
+
+                    // feedback the possibility of a drop
+                    dropzoneElement.classList.add('drop-target');
+                    draggableElement.classList.add('can-drop');
+                    draggableElement.textContent = 'Dragged in';
+                },
+                ondragleave: function (event) {
+                    // remove the drop feedback style
+                    event.target.classList.remove('drop-target');
+                    event.relatedTarget.classList.remove('can-drop');
+                    event.relatedTarget.textContent = 'Dragged out';
+                },
+                ondrop: function (event) {
+                    event.relatedTarget.textContent = 'Dropped';
+                },
+                ondropdeactivate: function (event) {
+                    // remove active dropzone feedback
+                    event.target.classList.remove('drop-active');
+                    event.target.classList.remove('drop-target');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+﻿.edit-row {
+    /* 
+    border: 1px solid white;
+    */
+    margin-bottom: 30px;
+}
+.edit-col {
+    border: 1px solid white;
+}
+.edit-content {
+    background-color: lightgray;
+    height: 150px;
+}
+.edit-botton-add-col {
+    position: relative;
+    right: -35px;
+    top: -150px;
+}
