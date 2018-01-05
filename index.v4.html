@@ -37,33 +37,19 @@
 
 
 <div id="container-outer" style="width:98%; margin: 2rem auto;">
-
-  
     <div id="container-inner" class="container">
-        <div class="row edit-row">
-<!--           <div class='col-sm-12'>
-          
-          </div> -->
-<!--             <div class="col-sm-6"><div style="background-color:lightgray;height:100px"></div></div>
-            <div class="col-sm-6"><div style="background-color:lightgray;height:100px"></div></div> -->
+        <div class="row">
+            <div class="col-sm-6"><div style="background-color:lightgray;height:100px"></div></div>
+            <div class="col-sm-6"><div style="background-color:lightgray;height:100px"></div></div>
         </div>
     </div>
-
-<div id="widget-box">
-  <p id="widget-box-bar">Widgets</p>
-  <div id="widget-news" class="widget-parent">
-  <div class="widget">News</div>
-  </div>
-  <div id="widget-knowledge" class="widget-parent">
-  <div class="widget">Knowledge</div>
-  </div>
-  <div id="widget-project" class="widget-parent">
-  <div class="widget">Project</div>
-  </div>
-  <div id="widget-highlight" class="widget-parent">
-  <div class="widget">Highlight</div>
-  </div>
-</div>
+    <div id="widget-box">
+        <p id="widget-box-bar">Widgets</p>
+        <div class="widget" >News</div>
+        <div class="widget" >Knowledge</div>
+        <div class="widget" >Project</div>
+        <div class="widget" >Highlight</div>
+    </div>
 
     <div class="container" id="container-edit">
     </div>
@@ -135,7 +121,6 @@ $(document).ready(function () {
     target.setAttribute('data-y', y);
   };
   var startPos = {x: 0, y: 0};
-  var widgetBoxPos = null;
   var isInside = false;
   interact('#widget-box').draggable({
     allowFrom: '#widget-box-bar',
@@ -168,17 +153,10 @@ $(document).ready(function () {
       var rect = interact.getElementRect(event.target);
       startPos.x = rect.left + rect.width  / 2;
       startPos.y = rect.top  + rect.height / 2;
-//       if (!widgetBoxPos) {
-//       event.interactable.draggable({
-//         snap: { targets: [ widgetBoxPos ] }
-//       });
-//         widgetBoxPos = null;
-//       } else {
+      
       event.interactable.draggable({
         snap: { targets: [ startPos ] }
       });
-//       }
-
     },
     onmove: dragMoveListener,
     onend: function (event) { 
@@ -195,7 +173,7 @@ $(document).ready(function () {
       //console.log('ondropactivate');
     },
     ondragenter: function (event) {
-       var dropzoneElement = event.target;
+      var dropzoneElement = event.target;
       var dropRect = interact.getElementRect(dropzoneElement),
           dropCenter = {
             x: dropRect.left + dropRect.width  / 2,
@@ -205,7 +183,7 @@ $(document).ready(function () {
         snap: { targets: [ dropCenter ] }
       });
       isInside = true;
-      widgetBoxPos = startPos;
+
       
       
       var draggableElement = event.relatedTarget;
@@ -222,29 +200,18 @@ $(document).ready(function () {
       isInside = false;
       event.target.classList.remove('drop-target');
       event.relatedTarget.classList.remove('can-drop');
-      //event.relatedTarget.textContent = 'Dragged out';
+      event.relatedTarget.textContent = 'Dragged out';
       console.log('ondragleave');
     },
     ondrop: function (event) {
-      //event.relatedTarget.textContent = 'Dropped';
-      console.log('ondrop');
+      event.relatedTarget.textContent = 'Dropped';
+      //console.log('ondrop');
     },
     ondropdeactivate: function (event) {
       event.target.classList.remove('drop-active');
       event.target.classList.remove('drop-target');
       console.log('ondropdeactivate');
-      if (isInside) {
-        console.log('ondropdeactivate inside');
-//         var previousDiv = event.relatedTarget.parentNode.innerHTML;
-//         console.log(previousDiv);
-        var prev = event.relatedTarget.innerHTML;
-        console.log(prev);
-        event.relatedTarget.parentNode.innerHTML = '<div class="widget">'+prev+'</div>';
-        event.relatedTarget.remove();
-//         event.draggable.draggable({ snap: false });
-//         event.draggable.draggable({ snap: { targets: [ widgetBoxPos ] } });
-//         dragMoveListener(event);
-      }
+      if (isInside) event.relatedTarget.classList.add('d-none');
     }
   });
   

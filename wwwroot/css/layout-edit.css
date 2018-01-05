@@ -1,8 +1,9 @@
-﻿.edit-row {
+.edit-row {
     /* 
     border: 1px solid white;
     */
-    margin-bottom: 30px;
+  margin-bottom: 30px;
+  min-height:200px;
 }
 .edit-col {
     border: 1px solid white;
@@ -15,4 +16,40 @@
     position: relative;
     right: -35px;
     top: -150px;
+}
+.d-none {
+  display: none;
+}
+
+#widget-box {
+    position: relative;
+    top: -230px;
+    width: 170px;
+    height: 350px;
+    background-color: #29e;
+    color: white;
+    border-radius: 3px;
+    -webkit-transform: translate(0px, 0px);
+    transform: translate(0px, 0px);
+}
+#widget-box-bar {
+    height: 45px;
+    background-color: mediumvioletred;
+    text-align:center;
+}
+.widget-parent {
+  text-align: center;
+  background-color: lightgray;
+  margin: 1rem;
+  line-height: 3rem;
+}
+.widget {
+    text-align: center;
+    color:black;
+    background-color: lawngreen;
+    margin: 0;
+    line-height: 3rem;
+}
+#container-inner {
+    background-color: darkgray;
 }
