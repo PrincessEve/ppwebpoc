@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>POC</title>
-      <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
 <!--         <link rel="stylesheet" href="css/font-awesome.min.css" /> -->
 <!--         <link rel="stylesheet" href="css/bootstrap.min.css" /> -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -27,7 +27,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="#">Layout</a></li>
-                    <li><a href="#">About</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a href="draggable.html">draggable</a></li>
                 </ul>
             </div>
@@ -136,151 +136,138 @@ $(document).ready(function () {
     addrow($('#container-edit'), editrows.length);
   });
 
-  function dragMoveListener(event) {
-    var target = event.target,
+
+            interact('#widget-box')
+                .draggable({
+                    allowFrom: '#widget-box-bar',
+                    inertia: true,
+                    restrict: {
+                        restriction: "parent",
+                        endOnly: true,
+                        elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+                    },
+                    autoScroll: true,
+                    onmove: dragMoveListener,
+                    onend: function (event) {
+                        //var textEl = event.target.querySelector('p');
+                        /*
+                        textEl && (textEl.textContent =
+                            'moved a distance of '
+                            + (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
+                                Math.pow(event.pageY - event.y0, 2) | 0))
+                                .toFixed(2) + 'px');
+                        */
+                    }
+                });
+
+            function dragMoveListener(event) {
+                var target = event.target,
+                    // keep the dragged position in the data-x/data-y attributes
+                    x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+                    y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+                // translate the element
+                target.style.webkitTransform =
+                    target.style.transform =
+                    'translate(' + x + 'px, ' + y + 'px)';
+
+                // update the posiion attributes
+                target.setAttribute('data-x', x);
+                target.setAttribute('data-y', y);
+            };
+          
+
+            function dragStartListener (event) {
+                var rect = interact.getElementRect(event.target);
+                startPos.x = rect.left + rect.width  / 2;
+                startPos.y = rect.top  + rect.height / 2;
+            };
+
+            window.dragMoveListener = dragMoveListener;
+  //var startPos = {x: 0, y: 0};
+  var startPos = null;
+  interact('.widget').draggable({
+    inertia: true,
+    restrict: ({
+      drag: "",
+      endOnly: true,
+      elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+    }),
+    snap: ({
+      mode: 'anchor',
+      anchors: [],
+      range: Infinity,
+      elementOrigin: { x: 0.5, y: 0.5 },
+      endOnly: true
+    }),
+    onmove: function (event) {
+      var target = event.target,
       x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
       y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
-    target.style.webkitTransform =
+      target.style.webkitTransform =
       target.style.transform =
       'translate(' + x + 'px, ' + y + 'px)';
 
-    target.setAttribute('data-x', x);
-    target.setAttribute('data-y', y);
-  };
-  //window.dragMoveListener = dragMoveListener;
-  var startPos = {x: 0, y: 0};
-  //var startPos = null;
-//   function dragStartListener (event) {
-//     var rect = interact.getElementRect(event.target);
-//     startPos.x = rect.left + rect.width  / 2;
-//     startPos.y = rect.top  + rect.height / 2;
-//   };
-
-  interact('#widget-box').draggable({
-    allowFrom: '#widget-box-bar',
-    inertia: true,
-    restrict: {
-      restriction: "parent",
-      endOnly: true,
-      elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+      target.setAttribute('data-x', x);
+      target.setAttribute('data-y', y);
     },
-    autoScroll: true,
-    onmove: dragMoveListener,
-    onend: function (event) {  }
-  });
+    onend: function (event) {
+      console.log('onend');
+    }
+  })
+	.on('dragstart', function (event) {
+	    if (!startPos) {
+	      var rect = interact.getElementRect(event.target);
+	      startPos = {
+	        x: rect.left + rect.width  / 2,
+	        y: rect.top  + rect.height / 2
+	      }
+	    }
+	    //event.interactable.snap({ anchors: [startPos] });
 
-  interact('.widget').draggable({
-    inertia: true,
-//     snap: {
-//       targets: [startPos],
-//       range: Infinity,
-//       relativePoints: [ { x: 0.5, y: 0.5 } ],
-//       endOnly: true
-//     },
-//     restrict: {
-//       restriction: "#container-outer",
-//       endOnly: true,
-//       elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-//     },
-    snap: ({
-//       mode: 'anchor',
-//       anchors: [],
-//       range: Infinity,
-//       elementOrigin: { x: 0.5, y: 0.5 },
-      targets: [startPos],
-      range: Infinity,
-      relativePoints: [ { x: 0.5, y: 0.5 } ],
-      endOnly: true
-    }),
-    restrict: ({
-      //drag: "",
-      restriction: "#container-outer",
-      endOnly: true,
-      elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-    }),
-    autoScroll: true,
-    //onstart: dragStartListener,
-    onstart: function (event) {
-//       if (!startPos) {
-//         var rect = interact.getElementRect(event.target);
-//         startPos = {
-//           x: rect.left + rect.width  / 2,
-//           y: rect.top  + rect.height / 2
-//         }
-//       }
-      var rect = interact.getElementRect(event.target);
-      startPos.x = rect.left + rect.width  / 2;
-      startPos.y = rect.top  + rect.height / 2;
-      
-      event.interactable.draggable({
-//         snap: { anchors: [ startPos ] }
-        snap: { targets: [ startPos ] }
-      });
-    },
-    onmove: dragMoveListener,
-    onend: function (event) { console.log('on end'); }
-  });
+      event.interactable.snap.anchors = [startPos];
+	});
 
-  interact('#container-inner').dropzone({
-    accept: '.widget',
-    overlap: 0.8,
-    ondropactivate: function (event) {
-      event.target.classList.add('drop-active');
-      //console.log('ondropactivate');
-    },
-    ondragenter: function (event) {
-      var dropzoneElement = event.target;
-      var dropRect = interact.getElementRect(dropzoneElement),
+  interact('#container-inner')
+    .dropzone({ overlap: 0.8, accept: '.widget' })
+    .on('dragenter', function (event) {
+      var dropRect = interact.getElementRect(event.target),
           dropCenter = {
             x: dropRect.left + dropRect.width  / 2,
             y: dropRect.top  + dropRect.height / 2
           };
 
-      //event.draggable.draggable().snap({ anchors: [ dropCenter ] });
-      //event.draggable.draggable().snap(false);
-      event.draggable.draggable({
-//         snap: { anchors: [ dropCenter ] }
-        snap: { targets: [ dropCenter ] }
-      });
-      
-
-      
-      
-      var draggableElement = event.relatedTarget;
+		  event.draggable().snap({ anchors: [ dropCenter ] });
+      var draggableElement = event.relatedTarget,
+          dropzoneElement = event.target;
       dropzoneElement.classList.add('drop-target');
       draggableElement.classList.add('can-drop');
       draggableElement.textContent = 'Dragged in';
-      console.log('ondragenter');
-    },
-    ondragleave: function (event) {
-      event.draggable.draggable({
-        snap: false
-      });
-      event.draggable.draggable({
-//         snap: { anchors: [ startPos ] }
-        snap: { targets: [ startPos ] }
-      });
-      
+    })
+    .on('dragleave', function (event) {
+//       event.draggable.snap(false);
+//       event.draggable.snap({ anchors: [startPos] });
       event.target.classList.remove('drop-target');
       event.relatedTarget.classList.remove('can-drop');
       event.relatedTarget.textContent = 'Dragged out';
-      console.log('ondragleave');
-    },
-    ondrop: function (event) {
-      event.relatedTarget.textContent = 'Dropped';
-      //console.log('ondrop');
-    },
-    ondropdeactivate: function (event) {
-      event.target.classList.remove('drop-active');
-      event.target.classList.remove('drop-target');
-      //console.log('ondropdeactivate');
-    }
-  });
+    })
+  	.on('dropactivate', function (event) {
+        event.target.classList.add('drop-active');
+    })
+    .on('dropdeactivate', function (event) {
+        event.target.classList.remove('drop-active');
+        event.target.classList.remove('drop-target');
+    })
+    .on('drop', function (event) {
+        event.relatedTarget.textContent = 'Dropped';
+    });
   
-  
-  
-  
+
+          
+          
+          
+          
 });
 </script>
 </body>
