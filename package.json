@@ -3,12 +3,26 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "watch": {
+    "uglifyjs": "wwwroot/js/site.js",
+    "uglifycss": {
+      "patterns": [
+        "wwwroot/css"
+      ],
+      "extensions": "css",
+      "ignore": "wwwroot/css/site.min.css",
+      "quiet": false,
+      "legacyWatch": true,
+      "delay": 2500
+    }
+  },
   "scripts": {
-    "uglifyjs": "node_modules/uglify-js/bin/uglifyjs wwwroot/js/site.js -o wwwroot/js/site.min.js -c -m",
-    "uglifycss": "node_modules/uglifycss/uglifycss --output wwwroot/css/site.min.css wwwroot/css/layout-edit.css wwwroot/css/layout.css wwwroot/css/site.css",
+    "uglifyjs": "node_modules/.bin/uglifyjs wwwroot/js/site.js -o wwwroot/js/site.min.js -c -m",
+    "uglifycss": "node_modules/.bin/uglifycss --output wwwroot/css/site.min.css wwwroot/css/layout-edit.css wwwroot/css/layout.css wwwroot/css/site.css",
     "build": "npm run uglifyjs && npm run uglifycss",
+    "watch": "npm-watch",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node_modules/http-server/bin/http-server ./wwwroot",
+    "start": "concurrently \"node_modules/.bin/http-server ./wwwroot\" \"npm run watch\"",
     "surge": "surge -p ./wwwroot -d ppwebpoc.surge.sh"
   },
   "repository": {
@@ -22,7 +36,9 @@
   },
   "homepage": "https://github.com/PrincessEve/ppwebpoc#readme",
   "devDependencies": {
+    "concurrently": "^3.5.1",
     "http-server": "^0.10.0",
+    "npm-watch": "^0.3.0",
     "uglify-js": "^3.3.4",
     "uglifycss": "0.0.27"
   }

@@ -4,6 +4,7 @@
     */
   margin-bottom: 30px;
   min-height:200px;
+  background-color: darkgray;
 }
 .edit-col {
     border: 1px solid white;
@@ -50,6 +51,11 @@
     margin: 0;
     line-height: 3rem;
 }
-#container-inner {
-    background-color: darkgray;
+.dropzone {
+
+  
 }
+#container-inner {
+
+}
+
