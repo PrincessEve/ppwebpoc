@@ -22,6 +22,8 @@
     "build": "npm run uglifyjs && npm run uglifycss",
     "watch": "npm-watch",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "harp-compile": "node_modules/.bin/harp compile app wwwroot",
+    "harp-server": "node_modules/.bin/harp server app --port 8080",
     "start": "concurrently \"node_modules/.bin/http-server ./wwwroot\" \"npm run watch\"",
     "surge": "surge -p ./wwwroot -d ppwebpoc.surge.sh"
   },
@@ -37,9 +39,11 @@
   "homepage": "https://github.com/PrincessEve/ppwebpoc#readme",
   "devDependencies": {
     "concurrently": "^3.5.1",
+    "harp": "^0.25.0",
     "http-server": "^0.10.0",
     "npm-watch": "^0.3.0",
     "uglify-js": "^3.3.4",
     "uglifycss": "0.0.27"
-  }
+  },
+  "dependencies": {}
 }
